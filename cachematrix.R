@@ -1,8 +1,11 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Calculate the 'in_x', i.e. the inverse of a matrix 'x'.
+## The inverse matrix is created in the cache, so that if it is needed to be computed again,
+## it can be looked up in the cache rather than recomputed. 
+## Allows faster calculation for repetead calculation of inverse of large matrices
 
-## Write a short comment describing this function
 
+## 'makeCacheMatrix' creates a list containing a function to set/get the matrix 'x' 
+## and its inverse 'in_x' 
 makeCacheMatrix <- function(x = matrix()) {
   in_x <- NULL
   set <- function(y) {
@@ -18,15 +21,17 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
-
+## 'cacheSolve'function (equivalent of the 'solve' function) 
+## returns a matrix 'in_x' that is the inverse of 'x'
 cacheSolve <- function(x, ...) {
-  ## Return a matrix 'in_x' that is the inverse of 'x'
+  ## First checks if 'in_x' has already been calculated. 
+  ## If so, it gets it from the cache and skips the computation.
   in_x <- x$getinv()
   if(!is.null(in_x)) {
     message("getting cached data")
     return(in_x)
   }
+  ## Otherwise, it calculates 'in_x' using 'solve' and sets it in the cache via the setinv function.
   data <- x$get()
   in_x <- solve(data, ...)
   x$setinv(in_x)
